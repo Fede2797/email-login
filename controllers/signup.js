@@ -1,46 +1,42 @@
-const nodemailer = require('nodemailer');
-
-function generateVerificationCode() {
-  return Math.floor(1000 + Math.random() * 9000);
-}
+const { SIGNUP_STATE } = require('../config/constants');
+const User = require('../models/user');
+const { generateVerificationCode, getHashCode, sendMail } = require('./helpers/signup');
 
 const signup = async (req, res) => {
 
   const { email } = req.body;
-  
-  // TODO: Almacenar email y el código en la base de datos.
+  const { userExisting } = req?.body;
 
-  // Genera un código de verificación.
-  const codigoVerificacion = generateVerificationCode();
-  console.log("Code:", codigoVerificacion);
+  // Generates a verification code
+  const verificationCode = generateVerificationCode();
 
-  // Sends the code via email
-  const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      auth: {
-        user: process.env.USER,
-        pass: process.env.APP_PASS,
-      },
+  // Encrypts the code
+  const hashedCode = await getHashCode(verificationCode);
+
+  if ( !userExisting ) {
+    // Creates new user
+    const newUser = new User({ 
+      email, 
+      hashedCode, 
+      state_signup: SIGNUP_STATE.pending, 
+      date_code: new Date(),
     });
+    // Saves the user on the DB
+    await newUser.save();
+    res.status(200).send("New user created");
+  } else {
 
-  const mailOptions = {
-      from: `"App login" <${process.env.USER}>`, // sender address
-      to: email, // receiver
-      subject: "This is login code email ✔", // Subject line
-      text: `Here is your verification code: ${codigoVerificacion}`, // plain text body
-      html: `<b>Here is your verification code: ${codigoVerificacion}</b>`, // html body
-    };
-
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error('Error sending verification code: ' + error);
-      res.status(500).send('Error sending verification code.');
-    } else {
-      console.log('Verification code sent: ' + info.response);
-      res.send('Verification code succesfully sent.');
+    // Edit the already existing user
+    const updatedFields = {
+      hashedCode,
+      state_signup: SIGNUP_STATE.pending,
+      date_code: new Date(),
     }
-  });
+    await User.findByIdAndUpdate( userExisting._id, updatedFields );
+    res.status(200).send("Verification code updated");
+  }
+
+  sendMail({ verificationCode, email });
 }
 
 module.exports = {

@@ -41,6 +41,7 @@ class Server {
 
   routes() {
     this.app.use( this.paths.signup, require("../routes/signup") );
+    this.app.use( this.paths.login, require("../routes/login") );
   }
 
   listen() {

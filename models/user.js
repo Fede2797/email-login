@@ -7,11 +7,13 @@ const UserSchema = Schema({
         required: [true, 'Email is mandatory'],
         unique: true,
     },
-    code: {
+    hashedCode: {
         type: String,
+        required: [true, 'hashedCode is mandatory'],
     },
     state_signup: {
         type: String,
+        required: [true, 'Signup state is mandatory'],
         // Timeout no necesariamente va a ser un estado, puede calcularse con el date_code
         // enum: ['PENDING_SIGNUP', 'SIGNEDUP', 'TIMEOUT'],
     },
@@ -22,6 +24,7 @@ const UserSchema = Schema({
     },
     date_code: {
         type: Date,
+        required: [true, 'Date of the latest code is mandatory'],
     },
     
 });

@@ -1,0 +1,11 @@
+
+module.exports = {
+  SIGNUP_STATE : {
+    pending: 'PENDING_SIGNUP', 
+    signedup: 'SIGNEDUP'
+  },
+  LOGIN_STATE: {
+    pending: 'PENDING_LOGIN', 
+    loggedin: 'LOGGEDIN'
+  }
+}

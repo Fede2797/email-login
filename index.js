@@ -6,19 +6,7 @@ const server = new Server();
  
 server.listen();
 
-// Ruta de validación del código de verificación.
-// app.post('/confirmsignup', (req, res) => {
-//   const { email, codigo } = req.body;
-
-//   // Obtiene el código de verificación almacenado para el correo electrónico.
-//   const storedCode = verificationCodes.get(email);
-
-//   if (storedCode && Number(codigo) === storedCode) {
-//     // Código válido: permite el registro.
-//     verificationCodes.delete(email); // Limpia el código después de la validación.
-//     res.send('Registro exitoso.');
-//   } else {
-//     // Código inválido: deniega el registro.
-//     res.status(401).send('Código de verificación incorrecto.');
-//   }
-// });
+// Ingresar email para signup
+// Ingresar codigo para finalizar signup
+// Ingresar email para log in
+// Ingresar codigo para finalizar log in

@@ -1,16 +1,16 @@
 const { Router } = require( "express" );
 const { check } = require("express-validator");
-const { signup } = require("../controllers/signup");
+const { login } = require("../controllers/login");
 const { validateFields } = require("../middlewares/field-validator");
-const { userExistsInDB } = require("../middlewares/user-existing-validator");
+const { isValidUser } = require("../middlewares/user-existing-validator");
 
 const router = Router();
 
-router.post('/', [
+router.get('/', [
     check('email', "Email is mandatory").not().isEmpty(),
     check('email', "Not valid email").isEmail(),
-    userExistsInDB,
+    isValidUser,
     validateFields
-  ], signup);
+  ], login);
 
 module.exports = router;
