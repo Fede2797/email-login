@@ -1,6 +1,5 @@
 const express = require('express');
 var cors = require('cors');
-const bodyParser = require('body-parser');
 const { dbConnection } = require('../database/config');
 
 class Server {
@@ -36,7 +35,6 @@ class Server {
 
     // Body parser
     this.app.use( express.json() );
-    // this.app.use( bodyParser.urlencoded({ extended: false }) );
   }
 
   routes() {

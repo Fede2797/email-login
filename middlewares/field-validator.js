@@ -9,6 +9,17 @@ const validateFields = ( req, res, next ) => {
   next();
 }
 
+const validateCode = ( req, res, next ) => {
+  const regex = /^\d{4}$/;
+
+  if ( !regex.test( req.body.verificationcode ) ) {
+    return res.status(400).send("Invalid verification code");
+  }
+
+  next();
+}
+
 module.exports = {
-  validateFields
+  validateFields,
+  validateCode
 }
