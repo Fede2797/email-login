@@ -16,7 +16,7 @@ const login = async (req, res) => {
   // Edit the user code
   const updatedFields = {
     hashedCode,
-    state_signup: LOGIN_STATE.pending,
+    state_login: LOGIN_STATE.pending,
     date_code: new Date(),
   }
   await User.findByIdAndUpdate( userExisting._id, updatedFields );

@@ -20,12 +20,15 @@ const isValidUser = async( req, res, next ) => {
 
   const userInDB = await User.findOne({ email });
   if ( !userInDB ){
-    throw new Error(`The user with email ${ email } does not exists`);
+    res.status(404).send("User not found");
   } else {
-    req.body.userExisting = userInDB;
+    if ( userInDB.state_signup !== "SIGNEDUP" ) {
+      res.status(404).send("User not found");
+    } else {
+      req.body.userExisting = userInDB;
+      next();
+    }
   }
-
-  next();
 }
 
 module.exports = {
