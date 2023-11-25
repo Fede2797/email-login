@@ -10,7 +10,7 @@ const getHashCode = async (code) => {
   return hashedCode;
 };
 
-const sendMail = ({ verificationCode, email }) => {
+const sendMail = ({ mailOptions }) => {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 587,
@@ -20,22 +20,14 @@ const sendMail = ({ verificationCode, email }) => {
     },
   });
 
-  const mailOptions = {
-    from: `"App login" <${process.env.USER}>`, // sender address
-    to: email, // receiver
-    subject: "This is login code email ✔", // Subject line
-    text: `Here is your verification code: ${verificationCode}`, // plain text body
-    html: `<b>Here is your verification code: ${verificationCode}</b>`, // html body
-  };
-
   // Sends the code via email
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error('Error sending verification code: ' + error);
-      res.status(500).send('Error sending verification code.');
+      console.error('Error sending email ' + error);
+      res.status(500).send('Error sending email.');
     } else {
-      console.log('Verification code sent: ' + info.response);
-      res.send('Verification code succesfully sent.');
+      console.log('Email sent ' + info.response);
+      res.send('Email succesfully sent.');
     }
   });
 }

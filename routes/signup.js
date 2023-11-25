@@ -14,7 +14,7 @@ router.post('/', [
     validateFields
   ], signup);
 
-router.post('/confirmsignup', [
+router.put('/confirmsignup', [
     check('email', "Email is mandatory").not().isEmpty(),
     check('email', "Not valid email").isEmail(),
     check('verificationcode', "The verification code is mandatory").not().isEmpty(),

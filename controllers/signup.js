@@ -36,7 +36,15 @@ const signup = async (req, res) => {
     res.status(200).send("Verification code updated");
   }
 
-  sendMail({ verificationCode, email });
+  const mailOptions = {
+    from: `"App login" <${process.env.USER}>`, // sender address
+    to: email, // receiver
+    subject: "Your temporary sign up code", // Subject line
+    text: `Here is your temporary sign up code: ${verificationCode}`, // plain text body
+    html: `<h3>Here is your temporary sign up code: ${verificationCode}</h3>`, // html body
+  };
+
+  sendMail({ mailOptions });
 }
 
 module.exports = {

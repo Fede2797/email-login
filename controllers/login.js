@@ -22,7 +22,15 @@ const login = async (req, res) => {
   await User.findByIdAndUpdate( userExisting._id, updatedFields );
   res.status(200).send("Verification code updated");
 
-  sendMail({ verificationCode, email });
+  const mailOptions = {
+    from: `"App login" <${process.env.USER}>`, // sender address
+    to: email, // receiver
+    subject: "Your temporary login code", // Subject line
+    text: `Here is your temporary login code: ${verificationCode}`, // plain text body
+    html: `<h3>Here is your temporary login code: ${verificationCode}</h3>`, // html body
+  };
+
+  sendMail({ mailOptions });
 }
 
 module.exports = {
